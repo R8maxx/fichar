@@ -4,7 +4,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import WebDriverWait
+from datetime import datetime
 import time
+
 
 # Directorio donde debemos dejar el driver
 PATH = "C:\Program Files (x86)\chromedriver.exe"
@@ -17,6 +19,7 @@ PASSWORD = "*"
 
 WORKIN_SPACE = 'equipo-otp'
 
+EMOJIS = ['( •̀ ω •́ )y', '(づ￣ 3￣)づ', '~\(≧▽≦)/~', '(★ ω ★)', '☆*: .｡. o(≧▽≦)o .｡.:*☆']
 
 def fichar():
     # Accedemos a la pagina
@@ -48,6 +51,9 @@ def fichar():
 
 
 def saludar():
+
+    now = datetime.today().weekday()
+
     # Accedemos a la pagina
     driver = webdriver.Chrome(PATH)
     driver.get('https://slack.com/workspace-signin')
@@ -67,31 +73,30 @@ def saludar():
     driver.find_element(By.ID, "signin_btn").click()
     time.sleep(2)
 
-    try:
-        element = WebDriverWait(driver, 15).until(
-            EC.visibility_of_element_located((By.XPATH, '//*[@id="page_contents"]/div/div/div[2]/p/a'))
-        )
-    except Exception as e:
-        print(e)
-    # continue_link = driver.find_element_by_link_text('usar Slack en el navegador')
-    # print(continue_link.get_attribute('href'))
-    # driver.get(continue_link.get_attribute('href'))
+    # try:
+    #     element = WebDriverWait(driver, 15).until(
+    #         EC.visibility_of_element_located((By.XPATH, '//*[@id="page_contents"]/div/div/div[2]/p/a'))
+    #     )
+    # except Exception as e:
+    #     print(e)
+
     driver.get('https://app.slack.com/client/T836R8Q57/GU5M108BH')
-    # continue_link.click()
-    # driver.find_element(By.ID, "GU5M108BH").click()
     time.sleep(6)
-    # texto = driver.find_element_by_xpath('/html/body/div[2]/div/div[2]/div[2]/div/div/div[3]/div/div[2]/div/div/div/div[2]/div/div/div/div[2]/div/div[1]/p')
-    # texto.send_keys('Hola')
-    driver.execute_script("document.querySelector('.ql-editor p').innerHTML = 'Buenos días ☆*: .｡. o(≧▽≦)o .｡.:*☆';")
+
+    driver.execute_script("document.querySelector('.ql-editor p').innerHTML = 'Buenos dias "+EMOJIS[now]+"';")
     time.sleep(1)
-    driver.execute_script("document.querySelector('.c-wysiwyg_container__button--send').click();");
+
+    driver.execute_script("document.querySelector('.c-wysiwyg_container__button--send').click();")
     time.sleep(1)
+
     driver.execute_script("document.querySelector('.ql-editor p').innerHTML = '/giphy good morning';")
     time.sleep(1)
-    driver.execute_script("document.querySelector('.c-wysiwyg_container__button--send').click();");
-    time.sleep(1)
-    driver.find_element(By.ID, "post-giphy:ephemeral_preview").click()
-    time.sleep(5)
+
+    driver.execute_script("document.querySelector('.c-wysiwyg_container__button--send').click();")
+    time.sleep(3)
+
+    driver.execute_script("document.getElementById('post-giphy:ephemeral_preview').click();")
+    time.sleep(2)
 
     # Cerramos el navegador
     driver.quit()
